@@ -1,46 +1,33 @@
 let panier = [];
 
 /* =========================
-   AJOUT AU PANIER + ANIMATION
+   AJOUT PANIER
 ========================= */
 function ajouterAuPanier(btn) {
-    let nom = btn.getAttribute("data-nom");
-    let prix = parseInt(btn.getAttribute("data-prix"));
+    let nom = btn.dataset.nom;
+    let prix = Number(btn.dataset.prix);
 
-    let existant = panier.find(item => item.nom === nom);
+    let item = panier.find(p => p.nom === nom);
 
-    if (existant) {
-        existant.quantite += 1;
+    if (item) {
+        item.quantite++;
     } else {
-        panier.push({
-            nom: nom,
-            prix: prix,
-            quantite: 1
-        });
+        panier.push({ nom, prix, quantite: 1 });
     }
 
     afficherPanier();
 
-    /* Animation bouton Commander */
-    let ancienTexte = btn.innerText;
     btn.innerText = "Ajouté ✔";
     btn.disabled = true;
-    btn.style.transform = "scale(1.05)";
-    btn.style.boxShadow = "0 8px 20px rgba(0,0,0,0.15)";
 
     setTimeout(() => {
-        btn.innerText = ancienTexte;
+        btn.innerText = "Commander";
         btn.disabled = false;
-        btn.style.transform = "";
-        btn.style.boxShadow = "";
-    }, 1000);
+    }, 800);
 
-    /* Animation icône panier */
-    let panierBtn = document.getElementById("btnPanier");
-    panierBtn.style.transform = "scale(1.15)";
-
+    document.getElementById("btnPanier").classList.add("bounce");
     setTimeout(() => {
-        panierBtn.style.transform = "scale(1)";
+        document.getElementById("btnPanier").classList.remove("bounce");
     }, 400);
 }
 
@@ -50,152 +37,105 @@ function ajouterAuPanier(btn) {
 function afficherPanier() {
     let liste = document.getElementById("listePanier");
     let total = 0;
-    let totalQuantite = 0;
+    let totalQte = 0;
 
     liste.innerHTML = "";
 
     if (panier.length === 0) {
-        liste.innerHTML = "<li>Votre panier est vide 🛒</li>";
+        liste.innerHTML = "<li>Panier vide 🛒</li>";
     }
 
-    panier.forEach(item => {
+    panier.forEach((p, i) => {
+        total += p.prix * p.quantite;
+        totalQte += p.quantite;
+
         let li = document.createElement("li");
 
         li.innerHTML = `
-            <div style="
-                display:flex;
-                justify-content:space-between;
-                align-items:center;
-                margin-bottom:12px;
-                padding:10px;
-                background:#fff;
-                border-radius:10px;
-            ">
+            <div class="panier-item">
                 <div>
-                    <strong>${item.nom}</strong><br>
-                    x${item.quantite} — ${item.prix * item.quantite} FCFA
+                    <strong>${p.nom}</strong><br>
+                    ${p.quantite} x ${p.prix} FCFA
                 </div>
-
-                <button onclick="supprimerDuPanier('${item.nom}')"
-                    style="
-                        background:#8b2e2e;
-                        color:white;
-                        border:none;
-                        width:35px;
-                        height:35px;
-                        border-radius:8px;
-                        cursor:pointer;
-                    ">
-                    ✕
-                </button>
+                <button onclick="supprimer(${i})">✕</button>
             </div>
         `;
 
         liste.appendChild(li);
-
-        total += item.prix * item.quantite;
-        totalQuantite += item.quantite;
     });
 
     document.getElementById("total").textContent = total + " FCFA";
 
     let badge = document.getElementById("badgePanier");
-    badge.textContent = totalQuantite;
-
-    if (totalQuantite === 0) {
-        badge.style.display = "none";
-    } else {
-        badge.style.display = "inline-block";
-    }
+    badge.textContent = totalQte;
+    badge.style.display = totalQte === 0 ? "none" : "inline-block";
 }
 
 /* =========================
-   SUPPRIMER DU PANIER
+   SUPPRIMER
 ========================= */
-function supprimerDuPanier(nom) {
-    panier = panier.filter(item => item.nom !== nom);
+function supprimer(index) {
+    panier.splice(index, 1);
     afficherPanier();
 }
 
 /* =========================
-   COMMANDER VIA WHATSAPP
+   WHATSAPP
 ========================= */
 function commanderWhatsApp() {
     if (panier.length === 0) {
-        alert("Votre panier est vide 🛒");
+        alert("Panier vide");
         return;
     }
 
-    let message = "Bonjour, je souhaite commander :\n";
+    let msg = "Commande:%0A";
     let total = 0;
 
-    panier.forEach(item => {
-        message += `- ${item.nom} x${item.quantite}\n`;
-        total += item.prix * item.quantite;
+    panier.forEach(p => {
+        msg += `- ${p.nom} x${p.quantite}%0A`;
+        total += p.prix * p.quantite;
     });
 
-    message += `\nTotal : ${total} FCFA`;
+    msg += `Total: ${total} FCFA`;
 
-    let numero = "221772794606";
-    let url = "https://wa.me/" + numero + "?text=" + encodeURIComponent(message);
-
-    window.open(url, "_blank");
+    window.open(
+        "https://wa.me/221772794606?text=" + msg,
+        "_blank"
+    );
 }
 
 /* =========================
-   OUVRIR / FERMER PANIER
+   TOGGLE PANIER
 ========================= */
 function togglePanier() {
-    let overlay = document.getElementById("panierOverlay");
-
-    if (overlay.style.display === "block") {
-        overlay.style.display = "none";
-    } else {
-        overlay.style.display = "block";
-    }
+    document.getElementById("panierOverlay").classList.toggle("show");
 }
 
 /* =========================
-   FERMER SI CLICK AILLEURS
+   CLOSE CLICK OUTSIDE
 ========================= */
-document.addEventListener("click", function (e) {
+document.addEventListener("click", (e) => {
     let overlay = document.getElementById("panierOverlay");
-    let btnPanier = document.getElementById("btnPanier");
+    let btn = document.getElementById("btnPanier");
 
-    if (
-        overlay &&
-        !overlay.contains(e.target) &&
-        !btnPanier.contains(e.target)
-    ) {
-        overlay.style.display = "none";
+    if (!overlay.contains(e.target) && !btn.contains(e.target)) {
+        overlay.classList.remove("show");
     }
 });
 
 /* =========================
-   ANIMATION DES CARDS AU SCROLL
+   ANIMATION SCROLL
 ========================= */
 document.addEventListener("DOMContentLoaded", () => {
-    const cards = document.querySelectorAll(".menu-card");
+    let cards = document.querySelectorAll(".menu-card");
 
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add("visible");
-                observer.unobserve(entry.target);
+    let observer = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                e.target.classList.add("visible");
             }
         });
-    }, {
-        threshold: 0.2
-    });
+    }, { threshold: 0.2 });
 
-    cards.forEach(card => {
-        observer.observe(card);
-    });
+    cards.forEach(c => observer.observe(c));
 });
-
-/* =========================
-   INITIALISATION
-========================= */
-window.onload = function () {
-    afficherPanier();
-};
