@@ -21,7 +21,7 @@ function ajouterAuPanier(btn) {
 
     afficherPanier();
 
-    /* Animation bouton */
+    /* Animation bouton Commander */
     let ancienTexte = btn.innerText;
     btn.innerText = "Ajouté ✔";
     btn.disabled = true;
@@ -35,7 +35,7 @@ function ajouterAuPanier(btn) {
         btn.style.boxShadow = "";
     }, 1000);
 
-    /* Animation panier */
+    /* Animation icône panier */
     let panierBtn = document.getElementById("btnPanier");
     panierBtn.style.transform = "scale(1.15)";
 
@@ -98,12 +98,14 @@ function afficherPanier() {
     });
 
     document.getElementById("total").textContent = total + " FCFA";
-    document.getElementById("badgePanier").textContent = totalQuantite;
+
+    let badge = document.getElementById("badgePanier");
+    badge.textContent = totalQuantite;
 
     if (totalQuantite === 0) {
-        document.getElementById("badgePanier").style.display = "none";
+        badge.style.display = "none";
     } else {
-        document.getElementById("badgePanier").style.display = "inline-block";
+        badge.style.display = "inline-block";
     }
 }
 
@@ -124,18 +126,18 @@ function commanderWhatsApp() {
         return;
     }
 
-    let message = "Bonjour, je souhaite commander :%0A";
+    let message = "Bonjour, je souhaite commander :\n";
     let total = 0;
 
     panier.forEach(item => {
-        message += `- ${item.nom} x${item.quantite}%0A`;
+        message += `- ${item.nom} x${item.quantite}\n`;
         total += item.prix * item.quantite;
     });
 
-    message += `%0ATotal : ${total} FCFA`;
+    message += `\nTotal : ${total} FCFA`;
 
     let numero = "221772794606";
-    let url = `https://wa.me/${numero}?text=${message}`;
+    let url = "https://wa.me/" + numero + "?text=" + encodeURIComponent(message);
 
     window.open(url, "_blank");
 }
@@ -156,7 +158,7 @@ function togglePanier() {
 /* =========================
    FERMER SI CLICK AILLEURS
 ========================= */
-document.addEventListener("click", function(e) {
+document.addEventListener("click", function (e) {
     let overlay = document.getElementById("panierOverlay");
     let btnPanier = document.getElementById("btnPanier");
 
@@ -167,6 +169,28 @@ document.addEventListener("click", function(e) {
     ) {
         overlay.style.display = "none";
     }
+});
+
+/* =========================
+   ANIMATION DES CARDS AU SCROLL
+========================= */
+document.addEventListener("DOMContentLoaded", () => {
+    const cards = document.querySelectorAll(".menu-card");
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add("visible");
+                observer.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.2
+    });
+
+    cards.forEach(card => {
+        observer.observe(card);
+    });
 });
 
 /* =========================
