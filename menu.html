@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RSBBM-CMAD</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg custom-navbar">
+  <div class="container">
+
+    <a class="navbar-brand" href="index.html">
+      <img src="image/logo.png" alt="RSBBM-CMAD">
+    </a>
+
+    <button class="navbar-toggler bg-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+
+      <ul class="navbar-nav ms-auto me-3">
+        <li class="nav-item"><a class="nav-link text-white" href="index.html">Accueil</a></li>
+        <li class="nav-item"><a class="nav-link text-white active" href="#">Menu</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="video.html">video</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="contact.html">Contact</a></li>
+      </ul>
+
+      <!-- PANIER -->
+      <button id="btnPanier" class="btn btn-light position-relative" onclick="togglePanier()">
+        🛒
+        <span id="badgePanier" class="badge bg-danger">0</span>
+      </button>
+
+      <div id="panierOverlay">
+        <h5>Votre panier</h5>
+        <ul id="listePanier"></ul>
+        <p>Total : <span id="total">0 FCFA</span></p>
+        <button class="btn btn-success w-100" onclick="commanderWhatsApp()">Commander</button>
+      </div>
+
+    </div>
+  </div>
+</nav>
+
+<!-- MENU -->
+<section class="menu-section py-5">
+  <div class="container">
+    <h2 class="text-center mb-5 fw-bold">Notre Menu</h2>
+
+    <div class="row g-4">
+
+      <script>
+        const plats = [
+          {nom:"Thieb Diene Bou Wekh", prix:1500, img:"image/image1.jpg"},
+          {nom:"Thieb Diene Bou Khokou", prix:2000, img:"image/image2.jpg"},
+          {nom:"Thiebou Guinar", prix:1000, img:"image/image3.jpg"},
+          {nom:"Mafé", prix:1500, img:"image/image4.jpg"},
+          {nom:"C Bon", prix:1500, img:"image/c bon.jpg"},
+          {nom:"Mbakhalou Saloum", prix:2000, img:"image/mbakhalou saloum.jpg"},
+          {nom:"Soupou Kania", prix:2000, img:"image/soupou kania.jpg"},
+          {nom:"Yassa", prix:2500, img:"image/yassa.jpg"},
+          {nom:"Vermicelle", prix:500, img:"image/vermisel.jpg"},
+          {nom:"Dakhine", prix:800, img:"image/dakhine.jpg"},
+          {nom:"Domoda", prix:1000, img:"image/domoda.jpg"},
+          {nom:"Pizza", prix:4000, img:"image/pizza.jpg"},
+          {nom:"Poutine", prix:4000, img:"image/poutine.jpg"},
+          {nom:"Brochette", prix:1500, img:"image/brochette.jpg"},
+          {nom:"Jus", prix:500, img:"image/jus.jpg"}
+        ];
+
+        document.write(plats.map(p => `
+        <div class="col-md-4 col-sm-6">
+          <div class="card menu-card h-100 shadow-sm">
+            <img src="${p.img}" class="card-img-top">
+
+            <div class="card-body text-center">
+              <h5 class="card-title">${p.nom}</h5>
+              <p class="price">${p.prix} FCFA</p>
+
+              <button class="btn btn-success w-100"
+                data-nom="${p.nom}"
+                data-prix="${p.prix}"
+                onclick="ajouterAuPanier(this)">
+                Commander
+              </button>
+
+            </div>
+          </div>
+        </div>
+        `).join(""));
+      </script>
+
+    </div>
+  </div>
+</section>
+
+<footer class="bg-dark text-white text-center py-4">
+  <p>© 2026 RSBBM-CMAD</p>
+</footer>
+
+<script src="scripte.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
