@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact - RSBBM-CMAD</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg custom-navbar">
+  <div class="container">
+
+    <a class="navbar-brand" href="index.html">
+      <img src="image/logo.png" style="height:70px;">
+    </a>
+
+    <button class="navbar-toggler bg-white" data-bs-toggle="collapse" data-bs-target="#nav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-end" id="nav">
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" href="index.html">Accueil</a></li>
+        <li class="nav-item"><a class="nav-link" href="menu.html">Menu</a></li>
+        <li class="nav-item"><a class="nav-link" href="video.html">Vidéo</a></li>
+        <li class="nav-item"><a class="nav-link active" href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+
+  </div>
+</nav>
+
+<!-- CONTACT -->
+<section class="py-5" style="background:#fff8f0;">
+  <div class="container">
+
+    <div class="text-center mb-5">
+      <h1 class="fw-bold" style="color:#6D1B1B;">Contactez-nous</h1>
+      <p>Restaurant Serigne Bassirou Bara Mbacke <br><strong>Chez Maman Absa Dia</strong></p>
+    </div>
+
+    <div class="row g-4">
+
+      <!-- INFOS -->
+      <div class="col-md-5">
+        <div class="p-4 shadow rounded bg-white h-100">
+
+          <h4 class="mb-3" style="color:#8b2e2e;">Informations</h4>
+
+          <p>📍 Dakar, Sénégal</p>
+          <p>📞 +221 77 279 46 06</p>
+          <p>📧 rsbbm@gmail.com</p>
+          <p>🕒 10h - 23h</p>
+
+        </div>
+      </div>
+
+      <!-- FORMULAIRE -->
+      <div class="col-md-7">
+        <div class="p-4 shadow rounded bg-white">
+
+          <h4 class="mb-3" style="color:#8b2e2e;">Envoyer un message</h4>
+
+          <form onsubmit="envoyerMessageWhatsApp(event)">
+
+            <div class="mb-3">
+              <label class="form-label">Nom complet</label>
+              <input type="text" id="nom" class="form-control" placeholder="Votre nom">
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Email</label>
+              <input type="email" id="email" class="form-control" placeholder="Votre email">
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Message</label>
+              <textarea id="message" class="form-control" rows="5" placeholder="Votre message"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-dark px-4">
+              Envoyer sur WhatsApp
+            </button>
+
+          </form>
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="text-center py-4" style="background:#2b0f0f; color:white;">
+  © 2026 RSBBM-CMAD
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- ton JS -->
+<script src="script.js"></script>
+
+</body>
+</html>

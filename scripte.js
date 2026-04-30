@@ -80,7 +80,7 @@ function supprimer(index) {
 }
 
 /* =========================
-   WHATSAPP
+   COMMANDER VIA WHATSAPP
 ========================= */
 function commanderWhatsApp() {
     if (panier.length === 0) {
@@ -100,6 +100,32 @@ function commanderWhatsApp() {
 
     window.open(
         "https://wa.me/221772794606?text=" + msg,
+        "_blank"
+    );
+}
+
+/* =========================
+   FORMULAIRE CONTACT -> WHATSAPP
+========================= */
+function envoyerMessageWhatsApp(event) {
+    event.preventDefault();
+
+    let nom = document.getElementById("nom").value;
+    let email = document.getElementById("email").value;
+    let message = document.getElementById("message").value;
+
+    if (nom === "" || email === "" || message === "") {
+        alert("Veuillez remplir tous les champs");
+        return;
+    }
+
+    let texte = `Bonjour RSBBM-CMAD%0A%0A`
+        + `👤 Nom : ${nom}%0A`
+        + `📧 Email : ${email}%0A`
+        + `💬 Message : ${message}`;
+
+    window.open(
+        "https://wa.me/221772794606?text=" + texte,
         "_blank"
     );
 }
